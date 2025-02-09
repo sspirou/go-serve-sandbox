@@ -2,19 +2,40 @@ package main
 
 import (
 	"fmt"
-	"net/http"
+	"os"
+
+	"euclidean/trybasicrouter"
+	"euclidean/trymux"
 )
 
 func main() {
-	message := "Go Server Sandbox Listening on Port 8083"
-	fmt.Println(message)
+	startupMessage := "Euclidean.GoSandbox Starting Up"
+	fmt.Println(startupMessage)
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Welcome to my Sandbox Go Server")
-	})
+	processParams()
+}
 
-	fs := http.FileServer(http.Dir("serve-me/"))
-	http.Handle("/serve-me/", http.StripPrefix("/serve-me/", fs))
+func processParams() {
+	args := os.Args
+	if len(args) != 2 {
+		printHelpMessage()
+		return
+	} else {
+		param := args[1]
+		switch param {
+		case "basic":
+			trybasicrouter.StartBasicServer()
+		case "mux":
+			trymux.StartMuxServer()
+		default:
+			printHelpMessage()
+		}
+	}
+}
 
-	http.ListenAndServe(":8083", nil)
+func printHelpMessage() {
+	helpMessage := "\nEuclidean Go Sandbox is a playground for trying server functionality in GoLang\n"
+	helpMessage += "Required input parameter options are \"basic\", \"mux\", and \"info\"\n"
+	helpMessage += "\ti.e. `go run main.go basic`"
+	fmt.Println(helpMessage)
 }
