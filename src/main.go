@@ -6,11 +6,11 @@ import (
 )
 
 func main() {
-	message := "Diagrammer Backend Service Started on Port 8083"
+	message := "Go Server Sandbox Listening on Port 8083"
 	fmt.Println(message)
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Diagrammer Backend Service Listening on Port 8083")
+		fmt.Fprintf(w, "Welcome to my Sandbox Go Server")
 	})
 
 	fs := http.FileServer(http.Dir("serve-me/"))
